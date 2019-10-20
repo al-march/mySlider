@@ -9,6 +9,11 @@ body {
   margin: 40px auto;
   overflow: hidden;
 }
+.slider-container2 {
+  max-width: 400px;
+  margin: auto;
+  overflow: hidden;
+}
 .slider__wrap {
   display: flex;
 }
