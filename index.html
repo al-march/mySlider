@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="style.css">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="slider-container">
+    <div class="slider__wrap">
+      <div class="slider__item">
+        <h1>
+          slide 1
+        </h1>
+      </div>
+      <div class="slider__item">
+        <h1>
+          slide 1
+        </h1>
+      </div>
+      <div class="slider__item">
+        <h1>
+          slide 1
+        </h1>
+      </div>
+    </div>
+    <div class="pagination">
+      <button class="btn btn--prev">
+        <</button> <button class="btn btn--next">>
+      </button>
+    </div>
+  </div>
+</body>
+
+<script>
+  slider = () => {
+    let sliderWrap = document.querySelector('.slider__wrap');
+    let btnPrev = document.querySelector('.btn--prev');
+    let btnNext = document.querySelector('.btn--next');
+
+    let slideIndex = 0;
+
+    // listeners
+    btnNext.addEventListener('click', () => {
+      nextSlide()
+    });
+    btnPrev.addEventListener('click', () => {
+      prevSlide()
+    });
+    // touch
+    let startX = 0;
+    let dist = 0;
+
+    sliderWrap.addEventListener('touchstart', (e) => {
+      startX = e.changedTouches[0].clientX
+      console.log(startX)
+    })
+    sliderWrap.addEventListener('touchmove', (e) => {
+      dist = e.changedTouches[0].clientX - startX
+      sliderWrap.style.transform = `translateX(${-slideIndex * sliderWrap.children[0].scrollWidth + dist}px)`
+
+    })
+    sliderWrap.addEventListener('touchend', () => {
+      console.log('end!!')
+      console.log(dist)
+      if (dist > 200) prevSlide();
+      else if (dist < -200) nextSlide();
+      else returnSlide()
+    })
+
+
+    // logical
+    nextSlide = () => {
+      slideIndex == sliderWrap.children.length - 1 ? sliderIndex = sliderWrap.children - 1 : slideIndex++
+      sliderWrap.style.transition = 'all ease 0.5s'
+      sliderWrap.style.transform = `translateX(${-slideIndex * sliderWrap.children[0].scrollWidth}px)`
+      setTimeout(() => {
+        sliderWrap.style.transition = '0s'
+      }, 500);
+    };
+    prevSlide = () => {
+      slideIndex == 0 ? slideIndex = 0 : slideIndex--
+      sliderWrap.style.transition = 'all ease 0.5s'
+      sliderWrap.style.transform = `translateX(${-slideIndex * sliderWrap.children[0].scrollWidth}px)`
+      setTimeout(() => {
+        sliderWrap.style.transition = '0s'
+      }, 500);
+    };
+    returnSlide = () => {
+      sliderWrap.style.transition = 'all ease 0.5s'
+      sliderWrap.style.transform = `translateX(${-slideIndex * sliderWrap.children[0].scrollWidth}px)`
+      setTimeout(() => {
+        sliderWrap.style.transition = '0s'
+      }, 500);
+    }
+  }
+  slider()
+</script>
+
+</html>
