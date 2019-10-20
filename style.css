@@ -4,7 +4,8 @@ body {
 }
 
 .slider-container {
-  width: 400px;
+  width: 90wv;
+  max-width: 400px;
   margin: 40px auto;
   overflow: hidden;
 }

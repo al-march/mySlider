@@ -19,12 +19,12 @@
       </div>
       <div class="slider__item">
         <h1>
-          slide 1
+          slide 2
         </h1>
       </div>
       <div class="slider__item">
         <h1>
-          slide 1
+          slide 3
         </h1>
       </div>
     </div>
@@ -67,8 +67,8 @@
     sliderWrap.addEventListener('touchend', () => {
       console.log('end!!')
       console.log(dist)
-      if (dist > 200) prevSlide();
-      else if (dist < -200) nextSlide();
+      if (dist > 100) prevSlide();
+      else if (dist < -100) nextSlide();
       else returnSlide()
     })
 
