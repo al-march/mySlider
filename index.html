@@ -33,29 +33,8 @@
         <</button> <button class="btn btn--next">>
       </button>
     </div>
-  </div>
-  <div class="slider-container2">
-    <div class="slider__wrap">
-      <div class="slider__item" style="background: yellow;">
-        <h1>
-          slide2 1
-        </h1>
-      </div>
-      <div class="slider__item" style="background: grey;">
-        <h1>
-          slide2 2
-        </h1>
-      </div>
-      <div class="slider__item">
-        <h1>
-          slide2 3
-        </h1>
-      </div>
-    </div>
-    <div class="pagination2">
-      <button class="btn btn--prev">
-        <</button> <button class="btn btn--next">>
-      </button>
+    <div class="dots">
+      
     </div>
   </div>
 </body>
@@ -67,8 +46,13 @@
       this.slider = document.querySelector(`${slider}`);
       this.pagination = document.querySelector(`${pagination}`)
     }
+
+    slideIndex = 0;
+    init() {
+      this.start();
+      this.dots();
+    };
     start() {
-      let slideIndex = 0;
       let sliderWrap = this.slider.querySelector('.slider__wrap');
       // listeners
       this.pagination.addEventListener('click', (e) => {
@@ -84,7 +68,7 @@
       })
       sliderWrap.addEventListener('touchmove', (e) => {
         dist = e.changedTouches[0].clientX - startX
-        sliderWrap.style.transform = `translateX(${-slideIndex * sliderWrap.children[0].scrollWidth + dist}px)`
+        sliderWrap.style.transform = `translateX(${-this.slideIndex * sliderWrap.children[0].scrollWidth + dist}px)`
       })
       sliderWrap.addEventListener('touchend', () => {
         if (dist > 100) prevSlide();
@@ -92,24 +76,29 @@
         else returnSlide()
       })
       // logical
-      let nextSlide = () => {
-        slideIndex == sliderWrap.children.length - 1 ? slideIndex = sliderWrap.children.length - 1 : slideIndex++;
+      const nextSlide = () => {
+        this.slideIndex == sliderWrap.children.length - 1 ? this.slideIndex = sliderWrap.children.length - 1 : this.slideIndex++;
         sliderWrap.style.transition = 'all ease 0.5s';
-        sliderWrap.style.transform = `translateX(${-slideIndex * sliderWrap.children[0].scrollWidth}px)`;
+        sliderWrap.style.transform = `translateX(${-this.slideIndex * sliderWrap.children[0].scrollWidth}px)`;
       };
-      let prevSlide = () => {
-        slideIndex == 0 ? slideIndex = 0 : slideIndex--;
+      const prevSlide = () => {
+        this.slideIndex == 0 ? this.slideIndex = 0 : this.slideIndex--;
         sliderWrap.style.transition = 'all ease 0.5s';
-        sliderWrap.style.transform = `translateX(${-slideIndex * sliderWrap.children[0].scrollWidth}px)`;
+        sliderWrap.style.transform = `translateX(${-this.slideIndex * sliderWrap.children[0].scrollWidth}px)`;
       };
-      let returnSlide = () => {
+      const returnSlide = () => {
         sliderWrap.style.transition = 'all ease 0.5s';
-        sliderWrap.style.transform = `translateX(${-slideIndex * sliderWrap.children[0].scrollWidth}px)`;
+        sliderWrap.style.transform = `translateX(${-this.slideIndex * sliderWrap.children[0].scrollWidth}px)`;
       }
+    };
+    dots() {
+      let numberOfDots = this.slider.querySelector('.slider__wrap').children.length;
+
+      console.log(numberOfDots)
     }
   }
-  let slider = new minSlider('.slider-container', '.pagination').start()
-  let slider2 = new minSlider('.slider-container2', '.pagination2').start()
+  const slider = new minSlider('.slider-container', '.pagination').init()
+
 </script>
 
 </html>
