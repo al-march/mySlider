@@ -32,9 +32,24 @@ body {
 .slider__item:nth-child(3) {
   background: green;
 }
+.slider__item:nth-child(4) {
+  background: gray;
+}
 h1 {
   color: #fff;
   font-size: 40px;
   font-family: sans-serif;
   text-transform: uppercase;
+}
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+.pagination button {
+  height: 36px;
+  width: 60px;
+  border: none;
+  font-weight: bold;
+  font-size: 22px;
 }

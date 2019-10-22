@@ -27,14 +27,18 @@
           slide 3
         </h1>
       </div>
+      <div class="slider__item">
+        <h1>
+          slide 4
+        </h1>
+      </div>
     </div>
     <div class="pagination">
-      <button class="btn btn--prev">
-        <</button> <button class="btn btn--next">>
-      </button>
+      <button class="btn btn--prev">&lt;</button>
+      <button class="btn btn--next">&gt;</button>
     </div>
     <div class="dots">
-      
+
     </div>
   </div>
 </body>
@@ -42,23 +46,31 @@
 
 <script>
   class minSlider {
-    constructor(slider, pagination) {
-      this.slider = document.querySelector(`${slider}`);
-      this.pagination = document.querySelector(`${pagination}`)
+    constructor(options) {
+      this.slider = options.el;
+      this.pagination = options.pagination;
+      this.timeout = options.timeout;
+      this.loop = options.loop;
+      this.dots = options.dots
     }
 
     slideIndex = 0;
+    nextSlide;
+    prevSlide;
+    returnSlide;
+
     init() {
       this.start();
-      this.dots();
+      if (this.pagination) this.paginationInit();
+      if (this.timeout) this.timeOut()
     };
+
     start() {
-      let sliderWrap = this.slider.querySelector('.slider__wrap');
+      let el = document.querySelector(this.slider)
+      let sliderWrap = document.querySelector('.slider__wrap');
+
       // listeners
-      this.pagination.addEventListener('click', (e) => {
-        if (e.target.classList.contains('btn--prev')) prevSlide()
-        if (e.target.classList.contains('btn--next')) nextSlide()
-      })
+
       // touch
       let startX = 0;
       let dist = 0;
@@ -71,32 +83,51 @@
         sliderWrap.style.transform = `translateX(${-this.slideIndex * sliderWrap.children[0].scrollWidth + dist}px)`
       })
       sliderWrap.addEventListener('touchend', () => {
-        if (dist > 100) prevSlide();
-        else if (dist < -100) nextSlide();
-        else returnSlide()
+        if (dist > 100) this.prevSlide();
+        else if (dist < -100) this.nextSlide();
+        else this.returnSlide()
       })
       // logical
-      const nextSlide = () => {
-        this.slideIndex == sliderWrap.children.length - 1 ? this.slideIndex = sliderWrap.children.length - 1 : this.slideIndex++;
+      this.nextSlide = () => {
+        if (this.loop) this.slideIndex == sliderWrap.children.length - 1 ? this.slideIndex = 0 : this.slideIndex++;
+        else this.slideIndex == sliderWrap.children.length - 1 ? this.slideIndex = sliderWrap.children.length - 1 : this.slideIndex++;
         sliderWrap.style.transition = 'all ease 0.5s';
         sliderWrap.style.transform = `translateX(${-this.slideIndex * sliderWrap.children[0].scrollWidth}px)`;
       };
-      const prevSlide = () => {
-        this.slideIndex == 0 ? this.slideIndex = 0 : this.slideIndex--;
+      this.prevSlide = () => {
+        if (this.loop) this.slideIndex == 0 ? this.slideIndex = sliderWrap.children.length - 1 : this.slideIndex--;
+        else this.slideIndex == 0 ? this.slideIndex = 0 : this.slideIndex--;
         sliderWrap.style.transition = 'all ease 0.5s';
         sliderWrap.style.transform = `translateX(${-this.slideIndex * sliderWrap.children[0].scrollWidth}px)`;
       };
-      const returnSlide = () => {
+      this.returnSlide = () => {
         sliderWrap.style.transition = 'all ease 0.5s';
         sliderWrap.style.transform = `translateX(${-this.slideIndex * sliderWrap.children[0].scrollWidth}px)`;
       }
     };
-    dots() {
-      let numberOfDots = this.slider.querySelector('.slider__wrap').children.length;
+    paginationInit() {
+      let pagination = document.querySelector(this.pagination)
+      pagination.addEventListener('click', (e) => {
+        if (e.target.classList.contains('btn--prev')) this.prevSlide()
+        if (e.target.classList.contains('btn--next')) this.nextSlide()
+      })
+    };
+    timeOut() {
+      setInterval(() => {
+        this.nextSlide()
+      }, this.timeout);
+    }
+    takeDots() {
+      let numberOfDots = document.querySelector('.slider__wrap').children.length;
       console.log(numberOfDots)
     }
   }
-  const slider = new minSlider('.slider-container', '.pagination').init()
+  const slider = new minSlider({
+    el: '.slider-container',
+    pagination: '.pagination',
+    loop: 'true'
+    // timeout: '2000'
+  }).init()
 
 </script>
 
