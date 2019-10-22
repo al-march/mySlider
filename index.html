@@ -81,16 +81,16 @@
       sliderWrap.addEventListener('touchstart', (e) => {
         sliderWrap.style.transition = '0s';
         startX = e.changedTouches[0].clientX
-      });
+      })
       sliderWrap.addEventListener('touchmove', (e) => {
         dist = e.changedTouches[0].clientX - startX
         sliderWrap.style.transform = `translateX(${-slideIndex * sliderWrap.children[0].scrollWidth + dist}px)`
-      });
+      })
       sliderWrap.addEventListener('touchend', () => {
         if (dist > 100) prevSlide();
         else if (dist < -100) nextSlide();
         else returnSlide()
-      });
+      })
       // logical
       let nextSlide = () => {
         slideIndex == sliderWrap.children.length - 1 ? slideIndex = sliderWrap.children.length - 1 : slideIndex++;
